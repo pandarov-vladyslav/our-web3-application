@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>My Web3 App</title>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="/static/svg/icon.svg"
+    >
+    <script src="https://unpkg.com/htmx.org@2.0.0/dist/htmx.min.js"></script>
+  </head>
+  <body>
+    <div
+      class="htmx-indicator"
+      style="font-size: 50px;"
+    >
+      <img src="/static/svg/loading__id.svg" alt="">
+      <p>Loading</p>
+    </div>
+    <h1
+      hx-get="/hello-world"
+      hx-indicator=".htmx-indicator"
+      hx-trigger="load"
+    >😪</h1>
+  </body>
+</html>
