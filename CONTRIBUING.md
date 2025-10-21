@@ -1,5 +1,3 @@
-Here's your improved CONTRIBUTING.md with better formatting, grammar fixes, and the last part translated to Ukrainian:
-
 # Як зробити внесок
 
 ## Логін
