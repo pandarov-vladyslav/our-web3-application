@@ -18,10 +18,23 @@
       <img src="/static/svg/loading__id.svg" alt="">
       <p>Loading</p>
     </div>
+
     <h1
       hx-get="/hello-world"
       hx-indicator=".htmx-indicator"
       hx-trigger="load"
     >😪</h1>
+
+    <!-- Кнопка для підвантаження crypto-top -->
+    <button
+      hx-get="/crypto-top"
+      hx-target="#crypto-container"
+      hx-indicator=".htmx-indicator"
+    >
+      $$$ Показати топ криптовалют $$$
+    </button>
+
+    <!-- Тут з'явиться таблиця з crypto-top -->
+    <div id="crypto-container"></div>
   </body>
 </html>
