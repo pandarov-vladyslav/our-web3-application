@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hedge.fun Waitlist</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?display=swap&family=Oswald:wght@200;300;400;500;600;700&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800">
+</head>я
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <a href="./" class="logo"><img src="images/logo.png" alt="Hedge.fun"></a>
+</header>
+
+<main>
+
+<section id="Waitlist" class="waitlist-section section">
+<div>
+  <h1>Hedge Your Fun(ds)</h1>
+  <p>Hedge your spot positions using prediction markets - simply bet against yourself on correlated market outcomes. <br>Drop your email and secure 100 Early Hedgehog points.</p>
+  <form id="waitlistForm">
+    <input type="email" name="email" placeholder="Enter your email address" required>
+    <button type="submit" class="btn btn-gradient btn-round">Join waitlist</button>
+  </form>
+</div>
+</section>
+
+<script>
+document.getElementById('waitlistForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const email = this.email.value;
+  if (!email) return;
+  alert('Thanks! ' + email + ' added to the waitlist.');
+  this.reset();
+});
+</script>
+
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-content">
+    <span>&copy; 2025 Hedge.fun</span>
+  </div>
+</footer>
+
+<!-- BACKGROUND ANIMATION -->
+<div class="crypto-bg">
+  <span>₿</span>
+  <span>Ξ</span>
+  <span>SOL</span>
+  <span>₿</span>
+  <span>Ξ</span>
+  <span>SOL</span>
+</div>
+
+
+</body>
+</html>
