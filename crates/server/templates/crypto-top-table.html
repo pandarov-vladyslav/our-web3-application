@@ -1,0 +1,19 @@
+<h2>Топ 5 криптовалют</h2>
+<table class="table">
+ <thead>
+   <tr>
+     <th>Место</th>
+     <th>Назва</th>
+     <th>Вартість у USD</th>
+   </tr>
+ </thead>
+ <tbody>
+   {% for row in rows %}
+   <tr>
+     <td>{{ loop.index }}</td>
+     <td>{{ row.name }}</td>
+     <td>{{ row.price }}</td>
+   </tr>
+   {% endfor %}
+ </tbody>
+</table>
