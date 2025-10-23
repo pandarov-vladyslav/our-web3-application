@@ -8,7 +8,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .route("/", get(index))
         .route("/hello-world", get(hello_world))
         .route("/favicon.ico", get(favicon))
-        .nest_service("/static", ServeDir::new("server/static"))
+        .nest_service("/static", ServeDir::new("crates/server/static"))
         .route("/crypto-top", get(crypto_top));
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:8081").await?;
@@ -18,7 +18,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 async fn index() -> Result<Html<String>, StatusCode> {
-    let index = fs::read_to_string("server/templates/index.html")
+    let index = fs::read_to_string("crates/server/templates/index.html")
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
 
