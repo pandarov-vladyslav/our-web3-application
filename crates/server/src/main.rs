@@ -1,12 +1,19 @@
 use std::{sync::Arc, time::Duration};
 
-use application::ExchangePrices;
-use axum::{Router, extract::State, http::StatusCode, response::Html, routing::get};
+use application::{ExchangePrices, LamportBalance};
+use askama::Template;
+use axum::{
+    Router,
+    extract::{Path, State},
+    http::StatusCode,
+    response::Html,
+    routing::get,
+};
 use tokio::{fs, sync::RwLock};
 use tower_http::services::ServeDir;
 mod templates;
 
-pub type SharedExchangePrices = Arc<RwLock<ExchangePrices>>;
+type SharedExchangePrices = Arc<RwLock<ExchangePrices>>;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -17,7 +24,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .route("/hello-world", get(hello_world))
         .route("/favicon.ico", get(favicon))
         .route("/crypto-top", get(crypto_top))
-        .route("/exchange-prices", get(exchange_prices))
+        .route("/account/{id}", get(account))
         .nest_service("/static", ServeDir::new("crates/server/static"))
         .with_state(shared_prices);
 
@@ -27,10 +34,22 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-async fn exchange_prices(
+async fn account(
     State(prices): State<SharedExchangePrices>,
+    Path(id): Path<String>,
 ) -> Result<Html<String>, StatusCode> {
-    todo!()
+    let rate = prices.read().await.sol_to_usd;
+    let lamport_balance = LamportBalance::get(id)
+        .await
+        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+    let sol = lamport_balance.to_sol();
+    let usd = lamport_balance.to_usd(rate);
+
+    let exchange_prices = templates::ExchangeRate { sol, usd, rate };
+    let html = exchange_prices
+        .render()
+        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+    Ok(Html(html))
 }
 
 async fn index() -> Result<Html<String>, StatusCode> {

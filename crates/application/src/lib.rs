@@ -22,7 +22,7 @@ impl std::fmt::Display for AppError {
 
 impl std::error::Error for AppError {}
 
-struct LamportBalance(u64);
+pub struct LamportBalance(u64);
 
 #[derive(Debug, Clone, Serialize)]
 pub struct ExchangePrices {
@@ -64,23 +64,22 @@ impl ExchangePrices {
 }
 
 impl LamportBalance {
-    async fn to_usd(&self, sol_to_usd: f64) -> f64 {
-        let self_sol = self.to_sol().await;
-        self_sol / sol_to_usd
+    pub fn to_usd(&self, sol_to_usd: f64) -> f64 {
+        let self_sol = self.to_sol();
+        self_sol * sol_to_usd
     }
-    async fn to_sol(&self) -> f64 {
+    pub fn to_sol(&self) -> f64 {
         self.0 as f64 / 1_000_000_000.0
     }
-}
+    pub async fn get(wallet_address: String) -> Result<Self, AppError> {
+        let pubkey = Pubkey::from_str(&wallet_address)
+            .map_err(|_| AppError::InvalidWalletAddress(wallet_address))?;
 
-async fn get_client_sol_balance(wallet_address: String) -> Result<LamportBalance, AppError> {
-    let pubkey = Pubkey::from_str(&wallet_address)
-        .map_err(|_| AppError::InvalidWalletAddress(wallet_address))?;
-
-    let rpc_url = "https://api.devnet.solana.com".to_string();
-    let client = RpcClient::new(rpc_url);
-    let balance = client
-        .get_balance(&pubkey)
-        .map_err(|_| AppError::ErrorFetchingBalance)?;
-    Ok(LamportBalance(balance))
+        let rpc_url = "https://api.devnet.solana.com".to_string();
+        let client = RpcClient::new(rpc_url);
+        let balance = client
+            .get_balance(&pubkey)
+            .map_err(|_| AppError::ErrorFetchingBalance)?;
+        Ok(LamportBalance(balance))
+    }
 }
