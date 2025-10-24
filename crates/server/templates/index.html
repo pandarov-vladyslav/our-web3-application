@@ -1,281 +1,283 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hedge.fun App</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?display=swap&family=Oswald:wght@200;300;400;500;600;700&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800">
-</head>
-<body>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Hedge.fun App</title>
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?display=swap&family=Oswald:wght@200;300;400;500;600;700&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800">
+	</head>
+	<body>
 
-<!-- HEADER -->
-<header class="header">
-  <a href="./" class="logo"><img src="images/logo.png" alt="Hedge.fun"></a>
-  <div class="header-right">
-    <span class="wallet-cap">Cap.: 000 SOL</span>
-    <button id="connectWalletBtn" class="btn btn-round btn-connect">Connect</button>
-  </div>
-</header>
+		<!-- HEADER -->
+		<header class="header">
+			<a href="./" class="logo"><img src="images/logo.png" alt="Hedge.fun"></a>
+			<div class="header-right">
+				<span class="wallet-cap">Cap.: 000 SOL</span>
+				<button id="connectWalletBtn" class="btn btn-round btn-connect">Connect</button>
+			</div>
+		</header>
 
-<main>
-  <!-- SECTION: Connect Wallet -->
-  <section id="ConnectWallet" class="section">
-  <div class="connect-dashboard">
-    <img src="images/Empty wallet.png" alt="Empty Wallet" class="wallet-img">
-    <p>Connect your Solana wallet</p>
-    <button id="connectBtn" class="btn btn-gradient btn-round">Connect Wallet</button>
-  </div>
-</section>
+		<main>
+			<!-- SECTION: Connect Wallet -->
+			<section id="ConnectWallet" class="section">
+				<div class="connect-dashboard">
+					<img src="images/Empty wallet.png" alt="Empty Wallet" class="wallet-img">
+					<p>Connect your Solana wallet</p>
+					<button id="connectBtn" class="btn btn-gradient btn-round">Connect Wallet</button>
+				</div>
+			</section>
 
-  <!-- SECTION: Dashboard -->
-  <section id="Dashboard" class="section" hidden>
-    <h2>Dashboard</h2>
-    <div class="balance">
-      <div class="balance-right">
-        <h4>Your balance:</h4>
-        <h3>$0.00</h3>
-      </div>
-    </div>
-    <a href="#" id="hedgeBtn" class="btn btn-gradient btn-round">Hedge my position</a>
-  </section>
+			<!-- SECTION: Dashboard -->
+			<section id="Dashboard" class="section" hidden>
+				<h2>Dashboard</h2>
+				<div class="balance">
+					<div class="balance-right">
+						<h4>Your balance:</h4>
+						<h3>$0.00</h3>
+					</div>
+				</div>
+				<a href="#" id="hedgeBtn" class="btn btn-gradient btn-round">Hedge my position</a>
+			</section>
 
-  <!-- SECTION: My Positions -->
-  <section id="MyPositions" class="section" hidden>
-    <h2>Hedge My Position</h2>
-    <div class="table-container">
-      <p>Select which assets you want to hedge (only positions above $20 are shown):</p>
-      <div class="table-wrapper">
-        <table class="hedge-table">
-          <thead>
-            <tr>
-              <th>Select</th>
-              <th>Asset</th>
-              <th>Balance</th>
-              <th>Value (USD)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><input type="checkbox"></td>
-              <td><img class="token-icon" data-symbol="SOL" alt="SOL"> SOL</td>
-              <td>5.42</td>
-              <td>$620.18</td>
-            </tr>
-            <tr>
-              <td><input type="checkbox"></td>
-              <td><img class="token-icon" data-symbol="USDC" alt="USDC"> USDC</td>
-              <td>350.00</td>
-              <td>$350.00</td>
-            </tr>
-            <tr>
-              <td><input type="checkbox"></td>
-              <td><img class="token-icon" data-symbol="BONK" alt="BONK"> BONK</td>
-              <td>1542000</td>
-              <td>$135.72</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <a href="#" id="addHedgeBtn" class="btn btn-gradient btn-round">Add new hedge</a>
-  </section>
+			<!-- SECTION: My Positions -->
+			<section id="MyPositions" class="section" hidden>
+				<h2>Hedge My Position</h2>
+				<div class="table-container">
+					<p>Select which assets you want to hedge (only positions above $20 are shown):</p>
+					<div class="table-wrapper">
+						<table class="hedge-table">
+							<thead>
+								<tr>
+									<th>Select</th>
+									<th>Asset</th>
+									<th>Balance</th>
+									<th>Value (USD)</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><input type="checkbox"></td>
+									<td><img class="token-icon" data-symbol="SOL" alt="SOL">
+									SOL</td>
+									<td>5.42</td>
+									<td>$620.18</td>
+								</tr>
+								<tr>
+									<td><input type="checkbox"></td>
+									<td><img class="token-icon" data-symbol="USDC" alt="USDC">
+									USDC</td>
+									<td>350.00</td>
+									<td>$350.00</td>
+								</tr>
+								<tr>
+									<td><input type="checkbox"></td>
+									<td><img class="token-icon" data-symbol="BONK" alt="BONK">
+									BONK</td>
+									<td>1542000</td>
+									<td>$135.72</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<a href="#" id="addHedgeBtn" class="btn btn-gradient btn-round">Add new hedge</a>
+			</section>
 
-  <!-- SECTION: Referral -->
-  <section id="Referral" class="section" hidden>
-    <h3>Invite your friends and earn rewards!</h3>
-    <a href="#" class="btn btn-gradient btn-round">Get referral link</a>
-  </section>
-</main>
+			<!-- SECTION: Referral -->
+			<section id="Referral" class="section" hidden>
+				<h3>Invite your friends and earn rewards!</h3>
+				<a href="#" class="btn btn-gradient btn-round">Get referral link</a>
+			</section>
+		</main>
 
-<!-- FOOTER -->
-<footer class="footer">
-  <div class="footer-content">
-    <a href="https://twitter.com/name" target="_blank" class="social-link">
-      <img src="images/twitter.png" alt="Twitter" class="social-icon">
-    </a>
-    <a href="#" class="social-link">
-      <img src="images/gitlab.png" alt="Gitbook" class="social-icon">
-    </a>
-    <a href="#" class="social-link">
-      <img src="images/faq.png" alt="FAQ" class="social-icon">
-    </a>
-    <a href="#" class="social-link">
-      <img src="images/discord.png" alt="Discord" class="social-icon">
-    </a>
-  </div>
-</footer>
+		<!-- FOOTER -->
+		<footer class="footer">
+			<div class="footer-content">
+				<a href="https://twitter.com/name" target="_blank" class="social-link">
+					<img src="images/twitter.png" alt="Twitter" class="social-icon">
+				</a>
+				<a href="#" class="social-link">
+					<img src="images/gitlab.png" alt="Gitbook" class="social-icon">
+				</a>
+				<a href="#" class="social-link">
+					<img src="images/faq.png" alt="FAQ" class="social-icon">
+				</a>
+				<a href="#" class="social-link">
+					<img src="images/discord.png" alt="Discord" class="social-icon">
+				</a>
+			</div>
+		</footer>
 
-<!-- BACKGROUND ANIMATION -->
-<div class="crypto-bg">
-  <span>₿</span>
-  <span>Ξ</span>
-  <span>SOL</span>
-  <span>₿</span>
-  <span>Ξ</span>
-  <span>SOL</span>
-</div>
+		<!-- BACKGROUND ANIMATION -->
+		<div class="crypto-bg">
+			<span>₿</span>
+			<span>Ξ</span>
+			<span>SOL</span>
+			<span>₿</span>
+			<span>Ξ</span>
+			<span>SOL</span>
+		</div>
 
-<script>
-  document.getElementById('connectBtn').addEventListener('click', () => {
-  document.getElementById('ConnectWallet').hidden = true;
-  document.getElementById('Dashboard').hidden = false;
-  document.getElementById('Referral').hidden = false;
-});
-  document.getElementById('hedgeBtn').addEventListener('click', () => {
-  document.getElementById('MyPositions').hidden = false;
-  });
-</script>
-<!-- Loading popup -->
-<div id="popup-overlay" class="popup-overlay">
-  <div id="popup-add-hedge" class="popup">
-    <img src="images/loading.png" alt="Loading" class="loading" style="width:60px; margin-bottom:20px;">
-    <h3>Processing your hedge...</h3>
-  </div>
-</div>
+		<script>
+			document.getElementById('connectBtn').addEventListener('click', () => {
+				document.getElementById('ConnectWallet').hidden = true;
+				document.getElementById('Dashboard').hidden = false;
+				document.getElementById('Referral').hidden = false;
+				});
+				document.getElementById('hedgeBtn').addEventListener('click', () => {
+					document.getElementById('MyPositions').hidden = false;
+					});
+		</script>
+		<!-- Loading popup -->
+		<div id="popup-overlay" class="popup-overlay">
+			<div id="popup-add-hedge" class="popup">
+				<img src="images/loading.png" alt="Loading" class="loading" style="width:60px; margin-bottom:20px;">
+				<h3>Processing your hedge...</h3>
+			</div>
+		</div>
 
-<!-- Hedge Offer Popup -->
-<div id="popup-hedge-offer-overlay" class="popup-overlay">
-  <div id="popup-hedge-offer" class="popup" style="max-width: 650px;">
-    <h2 style="margin-bottom: 15px;">Hedge Offer</h2>
-    <p style="margin-bottom: 15px;">Choose hedge position<br>Select a market to hedge your exposure.</p>
+		<!-- Hedge Offer Popup -->
+		<div id="popup-hedge-offer-overlay" class="popup-overlay">
+			<div id="popup-hedge-offer" class="popup" style="max-width: 650px;">
+				<h2 style="margin-bottom: 15px;">Hedge Offer</h2>
+				<p style="margin-bottom: 15px;">Choose hedge position<br>Select a market to hedge your exposure.</p>
 
-    <!-- Offer block -->
-    <div style="font-family: Arial, sans-serif; color: #ffffff; background-color: #1a2a50; padding: 20px; border-radius: 12px; max-width: 600px; margin: auto;">
-      <div class="table-wrapper" style="overflow-x:auto; margin-top: 10px;">
-        <table style="width: 100%; border-collapse: collapse; background-color: #243b70; border-radius: 8px; overflow: hidden;">
-          <thead>
-            <tr style="background-color: #1f2e5a;">
-              <th style="padding: 10px; text-align: left;">Market</th>
-              <th style="padding: 10px; text-align: left;">% Hedge</th>
-              <th style="padding: 10px; text-align: left;">Liquidity</th>
-              <th style="padding: 10px; text-align: left;">Select</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="padding: 10px;">SOL up / down</td>
-              <td style="padding: 10px;">10%</td>
-              <td style="padding: 10px;">$50K</td>
-              <td style="padding: 10px;"><input type="radio" name="hedge-select"></td>
-            </tr>
-            <tr>
-              <td style="padding: 10px;">BTC up / down</td>
-              <td style="padding: 10px;">15%</td>
-              <td style="padding: 10px;">$120K</td>
-              <td style="padding: 10px;"><input type="radio" name="hedge-select"></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+				<!-- Offer block -->
+				<div style="font-family: Arial, sans-serif; color: #ffffff; background-color: #1a2a50; padding: 20px; border-radius: 12px; max-width: 600px; margin: auto;">
+					<div class="table-wrapper" style="overflow-x:auto; margin-top: 10px;">
+						<table style="width: 100%; border-collapse: collapse; background-color: #243b70; border-radius: 8px; overflow: hidden;">
+							<thead>
+								<tr style="background-color: #1f2e5a;">
+									<th style="padding: 10px; text-align: left;">Market</th>
+									<th style="padding: 10px; text-align: left;">% Hedge</th>
+									<th style="padding: 10px; text-align: left;">Liquidity</th>
+									<th style="padding: 10px; text-align: left;">Select</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td style="padding: 10px;">SOL up / down</td>
+									<td style="padding: 10px;">10%</td>
+									<td style="padding: 10px;">$50K</td>
+									<td style="padding: 10px;"><input type="radio" name="hedge-select"></td>
+								</tr>
+								<tr>
+									<td style="padding: 10px;">BTC up / down</td>
+									<td style="padding: 10px;">15%</td>
+									<td style="padding: 10px;">$120K</td>
+									<td style="padding: 10px;"><input type="radio" name="hedge-select"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 
-      <div style="margin-top: 20px; background-color: #243b70; padding: 10px 15px; border-radius: 8px;">
-        <p style="margin-bottom: 8px; font-weight: bold;">Payment options:</p>
-        <label style="display: block; margin-bottom: 5px;">
-          <input type="radio" name="payment-option" checked> Pay with portfolio funds
-        </label>
-        <label style="display: block;">
-          <input type="radio" name="payment-option"> Pay additionally
-        </label>
-      </div>
-    </div>
+					<div style="margin-top: 20px; background-color: #243b70; padding: 10px 15px; border-radius: 8px;">
+						<p style="margin-bottom: 8px; font-weight: bold;">Payment options:</p>
+						<label style="display: block; margin-bottom: 5px;">
+							<input type="radio" name="payment-option" checked>
+							Pay with portfolio funds
+						</label>
+						<label style="display: block;">
+							<input type="radio" name="payment-option">
+							Pay additionally
+						</label>
+					</div>
+				</div>
 
-    <button id="hedgeNowBtn" class="btn btn-gradient btn-round" style="margin-top: 20px;">Hedge now</button>
-    <!-- <button class="close-btn" onclick="closePopup('popup-hedge-offer-overlay')" style="margin-top:10px;">✕</button> -->
-  </div>
-</div>
+				<button id="hedgeNowBtn" class="btn btn-gradient btn-round" style="margin-top: 20px;">Hedge now</button>
+				<!-- <button class="close-btn" onclick="closePopup('popup-hedge-offer-overlay')" style="margin-top:10px;">✕</button> -->
+			</div>
+		</div>
 
-<!-- Confirmation Popup -->
-<div id="popup-hedge-confirmation-overlay" class="popup-overlay">
-  <div id="popup-hedge-confirmation" class="popup" style="max-width: 500px; text-align:center;">
-    <img src="images/solana-sol-logo.png" alt="Solana" style="width:70px; margin-bottom:15px;">
-    <h2 style="margin-bottom: 10px;">Confirm transaction in your wallet</h2>
-    <p style="font-style: italic; margin-bottom: 20px;">
-      Please check your wallet to approve this transaction.
-    </p>
-  </div>
-</div>
+		<!-- Confirmation Popup -->
+		<div id="popup-hedge-confirmation-overlay" class="popup-overlay">
+			<div id="popup-hedge-confirmation" class="popup" style="max-width: 500px; text-align:center;">
+				<img src="images/solana-sol-logo.png" alt="Solana" style="width:70px; margin-bottom:15px;">
+				<h2 style="margin-bottom: 10px;">Confirm transaction in your wallet</h2>
+				<p style="font-style: italic; margin-bottom: 20px;">
+					Please check your wallet to approve this transaction.
+				</p>
+			</div>
+		</div>
 
-<!-- Result Popup -->
-<div id="popup-hedge-result-overlay" class="popup-overlay">
-  <div id="popup-hedge-result" class="popup" style="max-width: 500px; text-align:center;">
-    <img src="images/+.png" alt="Success" style="width:70px; margin-bottom:15px;">
-    <h2 style="margin-bottom: 10px;">Hedge completed successfully!</h2>
-    <p style="margin-bottom: 20px;">Manage it via Dashboard.</p>
-    <button class="btn btn-gradient btn-round" style="margin-bottom:10px;"
-    onclick="document.querySelectorAll('.popup-overlay').forEach(o => o.style.display='none')">
-    Go to Dashboard
-    </button>
-    <button class="btn btn-round" style="background-color:#1a2a50; border:1px solid #00ff88; color:#00ff88;">
-      Share on Twitter
-    </button>
-  </div>
-</div>
+		<!-- Result Popup -->
+		<div id="popup-hedge-result-overlay" class="popup-overlay">
+			<div id="popup-hedge-result" class="popup" style="max-width: 500px; text-align:center;">
+				<img src="images/+.png" alt="Success" style="width:70px; margin-bottom:15px;">
+				<h2 style="margin-bottom: 10px;">Hedge completed successfully!</h2>
+				<p style="margin-bottom: 20px;">Manage it via Dashboard.</p>
+				<button class="btn btn-gradient btn-round" style="margin-bottom:10px;" onclick="document.querySelectorAll('.popup-overlay').forEach(o => o.style.display='none')">
+					Go to Dashboard
+				</button>
+				<button class="btn btn-round" style="background-color:#1a2a50; border:1px solid #00ff88; color:#00ff88;">
+					Share on Twitter
+				</button>
+			</div>
+		</div>
 
-<!-- JS Logic -->
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  let hedgeTimeout = null;
-  let isProcessing = false;
-
-  function openPopup(id) {
-    document.querySelectorAll('.popup-overlay').forEach(o => o.style.display = 'none');
-    const el = document.getElementById(id);
-    if (el) el.style.display = 'flex';
-  }
-
-  function closePopup(id) {
-    const el = document.getElementById(id);
-    if (el) el.style.display = 'none';
-  }
-
-  // Add new hedge — Loading → Offer
-  const addBtn = document.getElementById('addHedgeBtn');
-  if (addBtn) {
-    addBtn.addEventListener('click', e => {
-      e.preventDefault();
-      if (isProcessing) return;
-      isProcessing = true;
-      document.querySelectorAll('.popup-overlay').forEach(o => o.style.display = 'none');
-      openPopup('popup-overlay');
-      hedgeTimeout = setTimeout(() => {
-        closePopup('popup-overlay');
-        openPopup('popup-hedge-offer-overlay');
-        isProcessing = false;
-      }, 2000);
-    });
-  }
-
-  // Hedge now → Confirmation → Result
-  const hedgeNowBtn = document.getElementById('hedgeNowBtn');
-  if (hedgeNowBtn) {
-    hedgeNowBtn.addEventListener('click', e => {
-      e.preventDefault();
-      closePopup('popup-hedge-offer-overlay');
-      openPopup('popup-hedge-confirmation-overlay');
-      setTimeout(() => {
-        closePopup('popup-hedge-confirmation-overlay');
-        openPopup('popup-hedge-result-overlay');
-      }, 2000);
-    });
-  }
-
-  // Go to Dashboard 
-  const goDashboardBtn = document.querySelector('#popup-hedge-result-overlay .btn-gradient');
-  if (goDashboardBtn) {
-    goDashboardBtn.addEventListener('click', () => {
-      closePopup('popup-hedge-result-overlay');
-    });
-  }
-
-  document.querySelectorAll('.popup-overlay').forEach(overlay => {
-    overlay.addEventListener('click', e => {
-      if (e.target === overlay) overlay.style.display = 'none';
-    });
-  });
-});
-</script>
-
-
-</body>
+		<!-- JS Logic -->
+		<script>
+			document.addEventListener('DOMContentLoaded', () => {
+				let hedgeTimeout = null;
+				let isProcessing = false;
+				
+				function openPopup(id) {
+					document.querySelectorAll('.popup-overlay').forEach(o => o.style.display = 'none');
+					const el = document.getElementById(id);
+					if (el) el.style.display = 'flex';
+				}
+				
+				function closePopup(id) {
+					const el = document.getElementById(id);
+					if (el) el.style.display = 'none';
+				}
+				
+				// Add new hedge — Loading → Offer
+				const addBtn = document.getElementById('addHedgeBtn');
+				if (addBtn) {
+					addBtn.addEventListener('click', e => {
+						e.preventDefault();
+						if (isProcessing) return;
+						isProcessing = true;
+						document.querySelectorAll('.popup-overlay').forEach(o => o.style.display = 'none');
+						openPopup('popup-overlay');
+						hedgeTimeout = setTimeout(() => {
+							closePopup('popup-overlay');
+							openPopup('popup-hedge-offer-overlay');
+							isProcessing = false;
+							}, 2000);
+							});
+						}
+						
+						// Hedge now → Confirmation → Result
+						const hedgeNowBtn = document.getElementById('hedgeNowBtn');
+						if (hedgeNowBtn) {
+							hedgeNowBtn.addEventListener('click', e => {
+								e.preventDefault();
+								closePopup('popup-hedge-offer-overlay');
+								openPopup('popup-hedge-confirmation-overlay');
+								setTimeout(() => {
+									closePopup('popup-hedge-confirmation-overlay');
+									openPopup('popup-hedge-result-overlay');
+									}, 2000);
+									});
+								}
+								
+								// Go to Dashboard
+								const goDashboardBtn = document.querySelector('#popup-hedge-result-overlay .btn-gradient');
+								if (goDashboardBtn) {
+									goDashboardBtn.addEventListener('click', () => {
+										closePopup('popup-hedge-result-overlay');
+										});
+									}
+									
+									document.querySelectorAll('.popup-overlay').forEach(overlay => {
+										overlay.addEventListener('click', e => {
+											if (e.target === overlay) overlay.style.display = 'none';
+											});
+											});
+											});
+		</script>
+	</body>
 </html>

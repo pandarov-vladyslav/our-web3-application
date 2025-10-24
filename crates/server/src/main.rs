@@ -25,6 +25,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .route("/favicon.ico", get(favicon))
         .route("/crypto-top", get(crypto_top))
         .route("/account/{id}", get(account))
+        .nest_service("/css", ServeDir::new("crates/server/static/css"))
+        .nest_service("/images", ServeDir::new("crates/server/static/images"))
         .nest_service("/static", ServeDir::new("crates/server/static"))
         .with_state(shared_prices);
 
