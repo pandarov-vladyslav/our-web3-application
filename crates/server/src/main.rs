@@ -30,8 +30,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .nest_service("/static", ServeDir::new("crates/server/static"))
         .with_state(shared_prices);
 
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:8081").await?;
-    println!("Running on http://0.0.0.0:8081");
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:8080").await?;
+    println!("Running on http://127.0.0.1:8080");
     axum::serve(listener, app).await?;
     Ok(())
 }
