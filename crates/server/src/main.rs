@@ -30,8 +30,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .nest_service("/static", ServeDir::new("crates/server/static"))
         .with_state(shared_prices);
 
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:8080").await?;
-    println!("Running on http://127.0.0.1:8080");
+    let port = std::env::var("PORT").unwrap_or_else(|_| "8081".to_string());
+    let listener = tokio::net::TcpListener::bind(format!("0.0.0.0:{port}")).await?;
+    println!("Running on http://0.0.0.0:{port}");
     axum::serve(listener, app).await?;
     Ok(())
 }
@@ -98,7 +99,6 @@ pub fn start_price_updater() -> SharedExchangePrices {
                     let mut guard = prices_clone.write().await;
                     guard.sol_to_usd = new_price;
                     guard.last_updated = std::time::SystemTime::now();
-                    println!("Updated SOL price: ${}", new_price);
                 }
                 Err(e) => eprintln!("Failed to fetch SOL price: {:?}", e),
             }
