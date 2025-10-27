@@ -15,7 +15,7 @@
 		<header class="header">
 			<a href="./" class="logo"><img src="images/logo.png" alt="Hedge.fun"></a>
 			<div class="header-right">
-				<span class="wallet-cap">Cap.: 000 SOL</span>
+				<span id="wallet-cap" class="wallet-cap" hidden>Cap.: 003 SOL</span>
 				<button id="connectWalletBtn" class="btn btn-round btn-connect">Connect</button>
 			</div>
 		</header>
@@ -34,10 +34,12 @@
 			<section id="Dashboard" class="section" hidden>
 				<h2>Dashboard</h2>
 				<div class="balance">
-					<div class="balance-right">
-						<h4>Your balance:</h4>
-						<h3>$0.00</h3>
-					</div>
+				<div class="balance-right">
+					<h4>Your balance:</h4>
+					<h3>$1865.00</h3>
+					<span id="walletStatus" style="color:#9ac31c; font-size:18px; margin-bottom:20px;">
+					Not connected
+					</span>
 				</div>
 				<h3>Crypto Price Chart</h3>
 				<canvas id="cryptoChart"></canvas>
@@ -53,51 +55,83 @@
 					<label style="margin-left:10px;"><input type="checkbox" id="toggleEMA" checked>
 					Show EMA</label>
 				</div>
-				<a href="#" id="hedgeBtn" class="btn btn-gradient btn-round">Hedge my position</a>
-			</section>
 
-			<!-- SECTION: My Positions -->
-			<section id="MyPositions" class="section" hidden>
-				<h2>Hedge My Position</h2>
-				<div class="table-container">
+				<a href="#" id="hedgeBtn" class="btn btn-gradient btn-round">Hedge my position</a>
+
+				<!-- SECTION: My Positions -->
+				<section id="MyPositions" class="section" hidden>
+					<h2>Hedge My Position</h2>
+					<div class="table-container">
 					<p>Select which assets you want to hedge (only positions above $20 are shown):</p>
 					<div class="table-wrapper">
 						<table class="hedge-table">
-							<thead>
-								<tr>
-									<th>Select</th>
-									<th>Asset</th>
-									<th>Balance</th>
-									<th>Value (USD)</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td><img class="token-icon" data-symbol="SOL" alt="SOL">
-									SOL</td>
-									<td>5.42</td>
-									<td>$620.18</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td><img class="token-icon" data-symbol="USDC" alt="USDC">
-									USDC</td>
-									<td>350.00</td>
-									<td>$350.00</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td><img class="token-icon" data-symbol="BONK" alt="BONK">
-									BONK</td>
-									<td>1542000</td>
-									<td>$135.72</td>
-								</tr>
-							</tbody>
+						<thead>
+							<tr>
+							<th>Select</th>
+							<th>Asset</th>
+							<th>Balance</th>
+							<th>Value (USD)</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+							<td><input type="checkbox"></td>
+							<td><img class="token-icon" data-symbol="SOL" alt="SOL"> SOL</td>
+							<td>3.0</td>
+							<td>$599.00</td>
+							</tr>
+							<tr>
+							<td><input type="checkbox"></td>
+							<td><img class="token-icon" data-symbol="USDC" alt="USDC"> USDC</td>
+							<td>1865.00</td>
+							<td>$1865.00</td>
+							</tr>
+							<tr>
+							<td><input type="checkbox"></td>
+							<td><img class="token-icon" data-symbol="BONK" alt="BONK"> BONK</td>
+							<td>1542000</td>
+							<td>$135.72</td>
+							</tr>
+						</tbody>
 						</table>
 					</div>
+					</div>
+					<a href="#" id="addHedgeBtn" class="btn btn-gradient btn-round">Add new hedge</a>
+				</section>
+				<script>
+					function getTokenIcon(symbol) {
+					const s = symbol.toUpperCase();
+					// Спроба отримати іконку з CoinGecko
+					const coingeckoIcons = {
+						SOL: "https://assets.coingecko.com/coins/images/4128/large/solana.png",
+						USDC: "https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png",
+						BONK: "https://assets.coingecko.com/coins/images/28600/large/bonk.jpg"
+					};
+					// Якщо ні - fallback на cryptoicons
+					return coingeckoIcons[s] || `https://cryptoicons.org/api/icon/${s.toLowerCase()}/64`;
+					}
+					// Після завантаження сторінки замінюємо src для всіх іконок
+					document.addEventListener("DOMContentLoaded", () => {
+					document.querySelectorAll(".token-icon").forEach(img => {
+						const symbol = img.dataset.symbol;
+						img.src = getTokenIcon(symbol);
+						img.width = 24;
+						img.height = 24;
+						img.style.marginRight = "8px";
+						img.style.verticalAlign = "middle";
+					});
+					});
+				</script>
+
+				<h3>Crypto Price Chart</h3>
+				<canvas id="cryptoChart"></canvas>
+				<div style="margin-top:10px; margin-bottom:20px;">
+				<label><input type="radio" name="currency" value="SOL" checked> SOL</label>
+				<label style="margin-left:10px;"><input type="radio" name="currency" value="USDC"> USDC</label>
+				<label style="margin-left:10px;"><input type="radio" name="currency" value="MET"> $MET</label>
+				<label style="margin-left:20px;"><input type="checkbox" id="toggleForecast" checked> Show Forecast</label>
+				<label style="margin-left:10px;"><input type="checkbox" id="toggleEMA" checked> Show EMA</label>
 				</div>
-				<a href="#" id="addHedgeBtn" class="btn btn-gradient btn-round">Add new hedge</a>
 			</section>
 
 			<!-- SECTION: Referral -->
@@ -140,12 +174,13 @@
 		<script>
 			document.getElementById('connectBtn').addEventListener('click', () => {
 				document.getElementById('ConnectWallet').hidden = true;
+				document.getElementById('wallet-cap').hidden = false;
 				document.getElementById('Dashboard').hidden = false;
 				document.getElementById('Referral').hidden = false;
 				});
-				document.getElementById('hedgeBtn').addEventListener('click', () => {
-					document.getElementById('MyPositions').hidden = false;
-					});
+			document.getElementById('hedgeBtn').addEventListener('click', () => {
+				document.getElementById('MyPositions').hidden = false;
+				});
 		</script>
 		<!-- Loading popup -->
 		<div id="popup-overlay" class="popup-overlay">
@@ -271,7 +306,6 @@
 			document.addEventListener('DOMContentLoaded', () => {
 				let hedgeTimeout = null;
 				let isProcessing = false;
-				const connectBtn = document.getElementById('connectWalletBtn');
 				
 				function openPopup(id) {
 					document.querySelectorAll('.popup-overlay').forEach(o => o.style.display = 'none');
@@ -288,9 +322,27 @@
 					if (el) el.style.display = 'none';
 				}
 
-				connectBtn.addEventListener('click', () => { // натискання кнопки Connect → показати попап з вибором гаманця
+				const connectBtn = document.getElementById('connectWalletBtn');
+				connectBtn.addEventListener('click', () => { // натискання кнопки Connect → показати попап з вибором гаманця (old)
 					openPopup('popup-wallet-overlay');
 				});
+
+				// const connectBtn = document.getElementById('connectBtn');
+				// [connectWalletBtn, connectBtn].forEach(btn => {
+				// 	if (!btn) return;
+				// 	btn.addEventListener('click', () => { // натискання кнопки Connect → показати попап з вибором гаманця (new)
+				// 	document.getElementById('popup-wallet-overlay').style.display = 'flex';
+				// 	});
+				// });
+
+				const statusEl = document.getElementById('walletStatus');
+				if (connectBtn && statusEl) {
+					// Дублюємо текст кнопки при зміні
+					const observer = new MutationObserver(() => {
+					statusEl.textContent = connectBtn.textContent;
+					});
+					observer.observe(connectBtn, { characterData: true, childList: true, subtree: true });
+				}
 
 				// --- Phantom ---
 				document.getElementById('wallet-phantom').addEventListener('click', async () => {
