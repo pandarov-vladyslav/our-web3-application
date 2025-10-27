@@ -103,6 +103,16 @@ main {
   text-align: center;
 }
 
+.wallet-btn:hover {
+  transform: scale(1.08);
+  color: #9ac31c !important;
+  text-shadow: 0 0 10px #9ac31c, 0 0 20px #9ac31c;
+}
+.wallet-btn:hover img {
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 15px #9ac31c);
+}
+
 .connect-dashboard {
   height: 65vh;
   display: flex;
