@@ -286,7 +286,7 @@
 
 			<div id="manual-wallet" style="text-align: center;">
 			<p style="color:#ccc; margin-bottom: 10px;">Or enter wallet address manually:</p>
-			<form hx-post="/account" hx-swap="none">
+			<form hx-post="/account" hx-swap="none" hx-on::after-request="if(event.detail.successful) this.reset()">
 				<input
 					name="account_id"
 					id="manualWalletInput" 
