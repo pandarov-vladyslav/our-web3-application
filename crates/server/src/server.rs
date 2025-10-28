@@ -13,3 +13,8 @@ pub struct ServerState {
 pub struct ActivePolymarketSearch {
     pub money: f64,
 }
+
+#[derive(Debug, Deserialize)]
+pub struct LoadAccount {
+    pub account_id: String,
+}
