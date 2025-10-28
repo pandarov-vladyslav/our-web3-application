@@ -27,6 +27,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .route("/calculator", get(calculator_body))
         .route("/calculator", post(calc))
         .nest_service("/css", ServeDir::new("crates/server/static/css"))
+        .nest_service("/js", ServeDir::new("crates/server/static/js"))
         .nest_service("/images", ServeDir::new("crates/server/static/images"))
         .nest_service("/effects", ServeDir::new("crates/server/static/effects"))
         .nest_service("/static", ServeDir::new("crates/server/static"))

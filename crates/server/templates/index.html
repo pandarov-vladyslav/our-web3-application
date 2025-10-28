@@ -6,7 +6,6 @@
 		<title>Hedge.fun App</title>
 		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 		<link rel="stylesheet" href="css/style.css">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?display=swap&family=Oswald:wght@200;300;400;500;600;700&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800">
 	<link rel="icon" type="image/png" href="images/logo.png">
@@ -109,7 +108,7 @@
 		<header class="header">
 			<a href="./" class="logo"><img src="images/logo.png" alt="Hedge.fun"></a>
 			<div class="header-right">
-				<span id="wallet-cap" class="wallet-cap" hidden>Cap.: null SOL</span>
+				<span id="wallet-cap" class="wallet-cap" hidden>Cap.:null SOL</span>
 				<button id="connectWalletBtn" class="btn btn-round btn-connect">Connect</button>
 			</div>
 		</header>
@@ -120,28 +119,7 @@
 				<div class="connect-dashboard">
 					<img src="images/Empty wallet.png" alt="Empty Wallet" class="wallet-img">
 					<p>Connect your Solana wallet</p>
-					<script>
-					async function connectWallet() {
-					  const { value: account } = await Swal.fire({
-					    title: "Enter your wallet address",
-					    input: "text",
-					    inputLabel: "Your wallet address",
-					    inputPlaceholder: "Enter your wallet address",
-					    showCancelButton: true,
-					    inputValidator: (value) => {
-					      if (!value) {
-					        return "You need to write something!";
-					      }
-					    }
-					  });
-  
-					  if (account) {
-					    htmx.ajax('GET', `/account/${encodeURIComponent(account)}`, '#balance');
-					  }
-					}
-					</script>
-
-					<button id="connectBtn" class="btn btn-gradient btn-round" onclick="connectWallet()">
+					<button id="connectBtn" class="btn btn-gradient btn-round">
 					  Connect Wallet
 					</button>
 				</div>
@@ -153,7 +131,9 @@
 				<div class="balance">
 				<div class="balance-right">
 					<h4>Your balance:</h4>
-					<h3 id="walletBalance">$NULL</h3>
+					<h3 id="balance__sol"></h3>
+					<h3 id="balance__usd"></h3>
+					<h5 id="balance__rate"></h5>
 					<span id="walletStatus" style="color:#9ac31c; font-size:18px; margin-bottom:20px;">
 					Not connected
 					</span>
@@ -306,16 +286,20 @@
 
 			<div id="manual-wallet" style="text-align: center;">
 			<p style="color:#ccc; margin-bottom: 10px;">Or enter wallet address manually:</p>
-			<input 
-				id="manualWalletInput" 
-				type="text" 
-				placeholder="Enter wallet address" 
-				style="width: 90%; padding: 10px; border-radius: 8px; border: none; font-size: 16px; text-align: center;">
-			<button 
-				id="manualWalletBtn" 
-				style="margin-top: 15px; padding: 10px 25px; border: none; border-radius: 8px; background-color: #9ac31c; color: #000; font-weight: bold; cursor: pointer;">
-				OK
-			</button>
+			<form hx-post="/account" hx-swap="none">
+				<input
+					name="account_id"
+					id="manualWalletInput" 
+					type="text" 
+					placeholder="Enter wallet address" 
+					style="width: 90%; padding: 10px; border-radius: 8px; border: none; font-size: 16px; text-align: center;">
+				<button
+					id="manualWalletBtn" 
+					type="submit"
+					style="margin-top: 15px; padding: 10px 25px; border: none; border-radius: 8px; background-color: #9ac31c; color: #000; font-weight: bold; cursor: pointer;">
+					OK
+				</button>
+			</form>
 			</div>
 		</div>
 		</div>
