@@ -1,12 +1,13 @@
 mod server;
 mod templates;
 
-use crate::server::{ActivePolymarketSearch, ServerState};
+use crate::server::{ActivePolymarketSearch, LoadAccount, ServerState};
 use application::{ExchangePrices, LamportBalance, PolymarketSolana260};
+
 use askama::Template;
 use axum::{
     Form, Router,
-    extract::{Path, State},
+    extract::State,
     http::StatusCode,
     response::Html,
     routing::{get, post},
@@ -21,7 +22,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let app = Router::new()
         .route("/", get(index))
-        .route("/account/{id}", get(account))
+        .route("/account", post(account))
         .route("/favicon.ico", get(favicon))
         .route("/calculator", get(calculator_body))
         .route("/calculator", post(calc))
@@ -63,14 +64,15 @@ async fn account(
         exchange_prices,
         polymarket_solana260: _,
     }): State<ServerState>,
-    Path(id): Path<String>,
+    Form(LoadAccount { account_id }): Form<LoadAccount>,
 ) -> Result<Html<String>, StatusCode> {
     let rate = exchange_prices.read().await.sol_to_usd;
-    let lamport_balance = LamportBalance::get(id)
+    let lamport_balance = LamportBalance::get(account_id)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
-    let sol = lamport_balance.to_sol();
-    let usd = lamport_balance.to_usd(rate);
+    let sol = &format!("{:.2}", lamport_balance.to_sol());
+    let usd = &format!("{:.2}", lamport_balance.to_usd(rate));
+    let rate = &format!("{:.2}", exchange_prices.read().await.sol_to_usd);
 
     let exchange_prices = templates::ExchangeRate { sol, usd, rate };
     let html = exchange_prices
