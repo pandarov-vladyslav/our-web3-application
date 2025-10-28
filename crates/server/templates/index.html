@@ -15,7 +15,7 @@
 		<header class="header">
 			<a href="./" class="logo"><img src="images/logo.png" alt="Hedge.fun"></a>
 			<div class="header-right">
-				<span id="wallet-cap" class="wallet-cap" hidden>Cap.: 003 SOL</span>
+				<span class="wallet-cap">Cap.: 000 SOL</span>
 				<button id="connectWalletBtn" class="btn btn-round btn-connect">Connect</button>
 			</div>
 		</header>
@@ -34,12 +34,10 @@
 			<section id="Dashboard" class="section" hidden>
 				<h2>Dashboard</h2>
 				<div class="balance">
-				<div class="balance-right">
-					<h4>Your balance:</h4>
-					<h3>$1865.00</h3>
-					<span id="walletStatus" style="color:#9ac31c; font-size:18px; margin-bottom:20px;">
-					Not connected
-					</span>
+					<div class="balance-right">
+						<h4>Your balance:</h4>
+						<h3>$0.00</h3>
+					</div>
 				</div>
 				<h3>Crypto Price Chart</h3>
 				<canvas id="cryptoChart"></canvas>
@@ -55,83 +53,51 @@
 					<label style="margin-left:10px;"><input type="checkbox" id="toggleEMA" checked>
 					Show EMA</label>
 				</div>
-
 				<a href="#" id="hedgeBtn" class="btn btn-gradient btn-round">Hedge my position</a>
+			</section>
 
-				<!-- SECTION: My Positions -->
-				<section id="MyPositions" class="section" hidden>
-					<h2>Hedge My Position</h2>
-					<div class="table-container">
+			<!-- SECTION: My Positions -->
+			<section id="MyPositions" class="section" hidden>
+				<h2>Hedge My Position</h2>
+				<div class="table-container">
 					<p>Select which assets you want to hedge (only positions above $20 are shown):</p>
 					<div class="table-wrapper">
 						<table class="hedge-table">
-						<thead>
-							<tr>
-							<th>Select</th>
-							<th>Asset</th>
-							<th>Balance</th>
-							<th>Value (USD)</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-							<td><input type="checkbox"></td>
-							<td><img class="token-icon" data-symbol="SOL" alt="SOL"> SOL</td>
-							<td>3.0</td>
-							<td>$599.00</td>
-							</tr>
-							<tr>
-							<td><input type="checkbox"></td>
-							<td><img class="token-icon" data-symbol="USDC" alt="USDC"> USDC</td>
-							<td>1865.00</td>
-							<td>$1865.00</td>
-							</tr>
-							<tr>
-							<td><input type="checkbox"></td>
-							<td><img class="token-icon" data-symbol="BONK" alt="BONK"> BONK</td>
-							<td>1542000</td>
-							<td>$135.72</td>
-							</tr>
-						</tbody>
+							<thead>
+								<tr>
+									<th>Select</th>
+									<th>Asset</th>
+									<th>Balance</th>
+									<th>Value (USD)</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><input type="checkbox"></td>
+									<td><img class="token-icon" data-symbol="SOL" alt="SOL">
+									SOL</td>
+									<td>5.42</td>
+									<td>$620.18</td>
+								</tr>
+								<tr>
+									<td><input type="checkbox"></td>
+									<td><img class="token-icon" data-symbol="USDC" alt="USDC">
+									USDC</td>
+									<td>350.00</td>
+									<td>$350.00</td>
+								</tr>
+								<tr>
+									<td><input type="checkbox"></td>
+									<td><img class="token-icon" data-symbol="BONK" alt="BONK">
+									BONK</td>
+									<td>1542000</td>
+									<td>$135.72</td>
+								</tr>
+							</tbody>
 						</table>
 					</div>
-					</div>
-					<a href="#" id="addHedgeBtn" class="btn btn-gradient btn-round">Add new hedge</a>
-				</section>
-				<script>
-					function getTokenIcon(symbol) {
-					const s = symbol.toUpperCase();
-					// Спроба отримати іконку з CoinGecko
-					const coingeckoIcons = {
-						SOL: "https://assets.coingecko.com/coins/images/4128/large/solana.png",
-						USDC: "https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png",
-						BONK: "https://assets.coingecko.com/coins/images/28600/large/bonk.jpg"
-					};
-					// Якщо ні - fallback на cryptoicons
-					return coingeckoIcons[s] || `https://cryptoicons.org/api/icon/${s.toLowerCase()}/64`;
-					}
-					// Після завантаження сторінки замінюємо src для всіх іконок
-					document.addEventListener("DOMContentLoaded", () => {
-					document.querySelectorAll(".token-icon").forEach(img => {
-						const symbol = img.dataset.symbol;
-						img.src = getTokenIcon(symbol);
-						img.width = 24;
-						img.height = 24;
-						img.style.marginRight = "8px";
-						img.style.verticalAlign = "middle";
-					});
-					});
-				</script>
-
-				<h3>Crypto Price Chart</h3>
-				<canvas id="cryptoChart"></canvas>
-				<div style="margin-top:10px; margin-bottom:20px;">
-				<label><input type="radio" name="currency" value="SOL" checked> SOL</label>
-				<label style="margin-left:10px;"><input type="radio" name="currency" value="USDC"> USDC</label>
-				<label style="margin-left:10px;"><input type="radio" name="currency" value="MET"> $MET</label>
-				<label style="margin-left:20px;"><input type="checkbox" id="toggleForecast" checked> Show Forecast</label>
-				<label style="margin-left:10px;"><input type="checkbox" id="toggleEMA" checked> Show EMA</label>
 				</div>
+				<a href="#" id="addHedgeBtn" class="btn btn-gradient btn-round">Add new hedge</a>
 			</section>
 
 			<!-- SECTION: Referral -->
@@ -174,13 +140,12 @@
 		<script>
 			document.getElementById('connectBtn').addEventListener('click', () => {
 				document.getElementById('ConnectWallet').hidden = true;
-				document.getElementById('wallet-cap').hidden = false;
 				document.getElementById('Dashboard').hidden = false;
 				document.getElementById('Referral').hidden = false;
 				});
-			document.getElementById('hedgeBtn').addEventListener('click', () => {
-				document.getElementById('MyPositions').hidden = false;
-				});
+				document.getElementById('hedgeBtn').addEventListener('click', () => {
+					document.getElementById('MyPositions').hidden = false;
+					});
 		</script>
 		<!-- Loading popup -->
 		<div id="popup-overlay" class="popup-overlay">
@@ -306,6 +271,7 @@
 			document.addEventListener('DOMContentLoaded', () => {
 				let hedgeTimeout = null;
 				let isProcessing = false;
+				const connectBtn = document.getElementById('connectWalletBtn');
 				
 				function openPopup(id) {
 					document.querySelectorAll('.popup-overlay').forEach(o => o.style.display = 'none');
@@ -321,68 +287,6 @@
 					const el = document.getElementById(id);
 					if (el) el.style.display = 'none';
 				}
-
-				const connectBtn = document.getElementById('connectWalletBtn');
-				connectBtn.addEventListener('click', () => { // натискання кнопки Connect → показати попап з вибором гаманця (old)
-					openPopup('popup-wallet-overlay');
-				});
-
-				// const connectBtn = document.getElementById('connectBtn');
-				// [connectWalletBtn, connectBtn].forEach(btn => {
-				// 	if (!btn) return;
-				// 	btn.addEventListener('click', () => { // натискання кнопки Connect → показати попап з вибором гаманця (new)
-				// 	document.getElementById('popup-wallet-overlay').style.display = 'flex';
-				// 	});
-				// });
-
-				const statusEl = document.getElementById('walletStatus');
-				if (connectBtn && statusEl) {
-					// Дублюємо текст кнопки при зміні
-					const observer = new MutationObserver(() => {
-					statusEl.textContent = connectBtn.textContent;
-					});
-					observer.observe(connectBtn, { characterData: true, childList: true, subtree: true });
-				}
-
-				// --- Phantom ---
-				document.getElementById('wallet-phantom').addEventListener('click', async () => {
-					closePopup('popup-wallet-overlay');
-					openPopup('popup-hedge-confirmation-overlay');
-					try {
-					if (!window.solana || !window.solana.isPhantom) {
-						alert('Install Phantom Wallet');
-						closePopup('popup-hedge-confirmation-overlay');
-						return;
-					}
-					const resp = await window.solana.connect();
-					console.log('Phantom connected:', resp.publicKey.toString());
-					connectBtn.textContent = 'Phantom: ' + resp.publicKey.toString().slice(0,4) + '...' + resp.publicKey.toString().slice(-4);
-					closePopup('popup-hedge-confirmation-overlay');
-					} catch (err) {
-					console.error(err);
-					closePopup('popup-hedge-confirmation-overlay');
-					}
-				});
-
-				// --- Backpack ---
-				document.getElementById('wallet-backpack').addEventListener('click', async () => {
-					closePopup('popup-wallet-overlay');
-					openPopup('popup-hedge-confirmation-overlay');
-					try {
-					if (!window.ethereum) {
-						alert('Install Backpack or MetaMask');
-						closePopup('popup-hedge-confirmation-overlay');
-						return;
-					}
-					const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-					console.log('Backpack connected:', accounts[0]);
-					connectBtn.textContent = 'Backpack: ' + accounts[0].slice(0,4) + '...' + accounts[0].slice(-4);
-					closePopup('popup-hedge-confirmation-overlay');
-					} catch (err) {
-					console.error(err);
-					closePopup('popup-hedge-confirmation-overlay');
-					}
-				});
 				
 				connectBtn.addEventListener('click', () => { // натискання кнопки Connect → показати попап з вибором гаманця
 				openPopup('popup-wallet-overlay');
@@ -619,151 +523,5 @@
 												// Initial load
 												buildChart('SOL');
 		</script>
-
-		<!-- JS Background music -->
-		<script>
-			const audio = new Audio('effects/cryptonight.mp3');
-			audio.loop = true;
-			audio.volume = 0.15;
-			function startAudio() {
-			audio.play();
-			document.body.removeEventListener('click', startAudio);
-			document.body.removeEventListener('touchstart', startAudio);
-			}
-			document.body.addEventListener('click', startAudio);
-			document.body.addEventListener('touchstart', startAudio);
-		</script>
-
-		<!-- JS Logic Schedule -->
-		<script>
-		const currencies = {
-		SOL: "solana",
-		USDC: "usd-coin",
-		MET: "meteora"
-		};
-
-		const pointsPerDay = 4; // чверті дня
-		const forecastDays = 3; // прогноз на m днів
-		const trainDays = 7;    // навчання на останніх n днів
-
-		async function loadData(coinId) {
-		const res = await fetch(`https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=usd&days=${trainDays}`);
-		const data = await res.json();
-		return data.prices.map(p => ({ time: new Date(p[0]), price: p[1] }));
-		}
-
-		function localRegression(prices, windowSize, predictCount) {
-		const result = [...prices.map(p => p.price)];
-		for (let i = 0; i < predictCount; i++) {
-			const start = Math.max(result.length - windowSize, 0);
-			const ys = result.slice(start);
-			const xs = Array.from({ length: ys.length }, (_, j) => j);
-			const n = xs.length;
-			const sumX = xs.reduce((a, b) => a + b, 0);
-			const sumY = ys.reduce((a, b) => a + b, 0);
-			const sumXY = xs.reduce((a, b, j) => a + b * ys[j], 0);
-			const sumX2 = xs.reduce((a, b) => a + b * b, 0);
-			const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
-			const intercept = (sumY - slope * sumX) / n;
-			result.push(slope * ys.length + intercept);
-		}
-		return result.slice(prices.length); // тільки прогнозні точки
-		}
-
-		async function buildChart(selectedCurrency) {
-		const prices = await loadData(currencies[selectedCurrency]);
-		const windowSize = 6;
-		const predictPoints = forecastDays * pointsPerDay;
-		const msStep = 6 * 60 * 60 * 1000;
-
-		// Forecast
-		const predicted = localRegression(prices, windowSize, predictPoints);
-		const forecastData = Array(prices.length-1).fill(null);
-		forecastData.push(prices[prices.length-1].price);
-		forecastData.push(...predicted);
-
-		// EMA
-		const emaPeriod = 5;
-		const alpha = 2/(emaPeriod+1);
-		const emaValues = [];
-		for(let i=0;i<prices.length;i++){
-			if(i===0) emaValues.push(prices[i].price);
-			else emaValues.push(alpha*prices[i].price + (1-alpha)*emaValues[i-1]);
-		}
-		let lastEMA = emaValues[emaValues.length-1];
-		for(let i=0;i<predicted.length;i++){
-			lastEMA = alpha*predicted[i] + (1-alpha)*lastEMA;
-			emaValues.push(lastEMA);
-		}
-
-		const labels = prices.map(p=>p.time.toLocaleString('en-GB',{hour12:false,hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit'}))
-						.concat(predicted.map((_,i)=>new Date(prices[prices.length-1].time.getTime()+(i+1)*msStep)
-						.toLocaleString('en-GB',{hour12:false,hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit'})));
-
-		// Buy/Sell/Break-even
-		const buyPrice = prices[0].price;
-		const sellPrice = prices[prices.length-1].price;
-		const breakEven = buyPrice / 1.2;
-
-		const backgroundPlugin = {
-			id:'background_zones',
-			beforeDraw:(chart)=>{
-			const ctx=chart.ctx;
-			const yScale=chart.scales.y;
-			const area=chart.chartArea;
-			const yBuy=yScale.getPixelForValue(buyPrice);
-			const ySell=yScale.getPixelForValue(sellPrice);
-			const yBreak=yScale.getPixelForValue(breakEven);
-			ctx.save();
-			ctx.fillStyle='rgba(16,185,129,0.12)'; ctx.fillRect(area.left,yBuy,area.right-area.left,area.bottom-yBuy);
-			ctx.fillStyle='rgba(239,68,68,0.12)'; ctx.fillRect(area.left,area.top,area.right-area.left,ySell-area.top);
-			ctx.fillStyle='rgba(250,204,21,0.15)'; ctx.fillRect(area.left,Math.min(yBuy,yBreak),area.right-area.left,Math.abs(yBreak-yBuy));
-			ctx.restore();
-			}
-		};
-
-		const ctx = document.getElementById('cryptoChart').getContext('2d');
-		if(window.chart) window.chart.destroy();
-		window.chart = new Chart(ctx,{
-			type:'line',
-			data:{
-			labels,
-			datasets:[
-				{ label: selectedCurrency + ' Price', data: prices.map(p=>p.price), borderColor:'#38bdf8', backgroundColor:'rgba(56,189,248,0.25)', tension:0.3, pointRadius:0 },
-				{ label:'Forecast', data:forecastData, borderColor:'#a78bfa', borderDash:[6,4], borderWidth:2, tension:0.4, pointRadius:2, pointBackgroundColor:'#a78bfa', hidden:!document.getElementById('toggleForecast').checked },
-				{ label:'EMA', data:emaValues, borderColor:'#f472b6', borderWidth:2, pointRadius:0, tension:0.4, hidden:!document.getElementById('toggleEMA').checked },
-				{ label:'Buy Price', data:prices.concat(predicted).map(()=>buyPrice), borderColor:'#10b981', borderDash:[5,5], borderWidth:1, pointRadius:0 },
-				{ label:'Sell Price', data:prices.concat(predicted).map(()=>sellPrice), borderColor:'#ef4444', borderDash:[5,5], borderWidth:1, pointRadius:0 },
-				{ label:'Break-even', data:prices.concat(predicted).map(()=>breakEven), borderColor:'#facc15', borderDash:[5,5], borderWidth:1, pointRadius:0 }
-			]
-			},
-			options:{
-			responsive:true,
-			plugins:{ legend:{ labels:{ color:'#e2e8f0' } }, title:{ display:true, text:selectedCurrency + ' — Forecast', color:'#e2e8f0', font:{ size:16 } } },
-			scales:{ x:{ ticks:{ color:'#94a3b8' } }, y:{ ticks:{ color:'#94a3b8' } } }
-			},
-			plugins:[backgroundPlugin]
-		});
-		}
-
-		// --- Event listeners ---
-		document.getElementById('toggleForecast').addEventListener('change', e=>{
-		if(window.chart) window.chart.data.datasets[1].hidden = !e.target.checked;
-		if(window.chart) window.chart.update();
-		});
-		document.getElementById('toggleEMA').addEventListener('change', e=>{
-		if(window.chart) window.chart.data.datasets[2].hidden = !e.target.checked;
-		if(window.chart) window.chart.update();
-		});
-		document.querySelectorAll('input[name="currency"]').forEach(radio=>{
-		radio.addEventListener('change', e=>{
-			buildChart(e.target.value);
-		});
-		});
-
-		// Initial load
-		buildChart('SOL');
-		</script>
-
 	</body>
 </html>
