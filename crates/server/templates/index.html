@@ -131,8 +131,8 @@
 				<div class="balance">
 				<div class="balance-right">
 					<h4>Your balance:</h4>
-					<h3 id="balance__usd"></h3>
 					<h3 id="balance__sol"></h3>
+					<h3 id="balance__usd"></h3>
 					<h5 id="balance__rate"></h5>
 					<span id="walletStatus" style="color:#9ac31c; font-size:18px; margin-bottom:20px;">
 					Not connected
@@ -286,14 +286,14 @@
 
 			<div id="manual-wallet" style="text-align: center;">
 			<p style="color:#ccc; margin-bottom: 10px;">Or enter wallet address manually:</p>
-			<form hx-post="/account">
-				<input 
+			<form hx-post="/account" hx-swap="none">
+				<input
 					name="account_id"
 					id="manualWalletInput" 
 					type="text" 
 					placeholder="Enter wallet address" 
 					style="width: 90%; padding: 10px; border-radius: 8px; border: none; font-size: 16px; text-align: center;">
-				<button 
+				<button
 					id="manualWalletBtn" 
 					type="submit"
 					style="margin-top: 15px; padding: 10px 25px; border: none; border-radius: 8px; background-color: #9ac31c; color: #000; font-weight: bold; cursor: pointer;">
