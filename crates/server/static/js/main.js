@@ -1,5 +1,4 @@
 // <!-- JS Popup Logic -->
-// Відповідає за відкриття та закриття всіх попапів
 const sound = document.getElementById('popup-sound');
 
 function openPopup(id) {
@@ -17,7 +16,6 @@ function closePopup(id) {
     if (el) el.style.display = 'none';
 }
 
-// Закриття при кліку на overlay
 document.addEventListener('click', e => {
     if (e.target.classList.contains('popup-overlay')) {
         e.target.style.display = 'none';
@@ -26,8 +24,7 @@ document.addEventListener('click', e => {
 
 //=================================================================================================
 
-// < !--JS Hedge Buttons-- >
-// Відповідає за Add new hedge → Offer → Confirmation → Result
+// <!-- JS Hedge Buttons -->
 document.addEventListener('DOMContentLoaded', () => {
     let hedgeTimeout = null;
     let isProcessing = false;
@@ -72,8 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 //=================================================================================================
 
-// <!-- Background Music = -->
-// Фоновий звук, автоплей після першого кліку
+// <!-- Background Music -->
 const audio = new Audio('effects/cryptonight.mp3');
 audio.loop = true;
 audio.volume = 0.15;
@@ -92,8 +88,8 @@ document.body.addEventListener('touchstart', startAudio);
 // <!-- JS Connecting wallets -->
 document.addEventListener('DOMContentLoaded', () => {
     const connectBtns = [
-        document.getElementById('connectWalletBtn'), // Кнопка у хедері
-        document.getElementById('connectBtn')        // Кнопка в секції Connect Wallet
+        document.getElementById('connectWalletBtn'),
+        document.getElementById('connectBtn')
     ];
     const statusEl = document.getElementById('walletStatus');
     const walletCapEl = document.getElementById('wallet-cap');
@@ -104,13 +100,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const backpackBtn = document.getElementById('wallet-backpack');
     const manualBtn = document.getElementById('manualWalletBtn');
 
-    // --- Відкриття попапу при натисканні будь-якої кнопки підключення ---
+    // --- Открытие попапа при нажатии на любую кнопку ---
     connectBtns.forEach(btn => {
         if (!btn) return;
-        btn.addEventListener('click', () => {
-            openPopup('popup-wallet-overlay');
-        });
+        btn.addEventListener('click', () => openPopup('popup-wallet-overlay'));
     });
+
+    // --- Общая функция после подключения ---
+    async function handleWalletConnected(fullAddress) {
+        const short = fullAddress.slice(0, 4) + '...' + fullAddress.slice(-4);
+        connectBtns.forEach(b => b.textContent = short);
+        statusEl.textContent = 'Connected: ' + fullAddress;
+        walletCapEl.hidden = false;
+        dashboardEl.hidden = false;
+        referralEl.hidden = false;
+
+        // --- Загружаем данные пользователя, но блок Hedge скрыт ---
+        if (typeof loadUserPositions === 'function') {
+            try {
+                await loadUserPositions(fullAddress);
+            } catch (e) {
+                console.error('Ошибка при загрузке позиций:', e);
+            }
+        }
+    }
 
     // --- Phantom Wallet ---
     phantomBtn?.addEventListener('click', async () => {
@@ -121,49 +134,56 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             const resp = await window.solana.connect();
-            const fullAddress = resp.publicKey.toString();
-            const short = fullAddress.slice(0, 4) + '...' + fullAddress.slice(-4);
-            connectBtns.forEach(b => b.textContent = short);
-            statusEl.textContent = 'Connected: ' + fullAddress;
-            // --- Показати основний контент після успішного підключення ---
-            walletCapEl.hidden = false;
-            dashboardEl.hidden = false;
-            referralEl.hidden = false;
+            await handleWalletConnected(resp.publicKey.toString());
         } catch (err) { console.error(err); }
     });
 
-    // --- Backpack Wallet ---
+    // --- Backpack / MetaMask ---
     backpackBtn?.addEventListener('click', async () => {
         closePopup('popup-wallet-overlay');
         try {
-            if (!window.ethereum) { alert('Будь ласка, встановіть Backpack або MetaMask'); return; }
+            if (!window.ethereum) {
+                alert('Будь ласка, встановіть Backpack або MetaMask');
+                return;
+            }
             const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-            const fullAddress = accounts[0];
-            const short = fullAddress.slice(0, 4) + '...' + fullAddress.slice(-4);
-            connectBtns.forEach(b => b.textContent = short);
-            statusEl.textContent = 'Connected: ' + fullAddress;
-            // --- Показати основний контент після успішного підключення ---
-            walletCapEl.hidden = false;
-            dashboardEl.hidden = false;
-            referralEl.hidden = false;
+            await handleWalletConnected(accounts[0]);
         } catch (err) { console.error(err); }
     });
 
     // --- Manual Wallet Input ---
-    manualBtn?.addEventListener('click', () => {
-        const input = document.getElementById('manualWalletInput').value.trim();
-        if (input.length < 10) { alert('Будь ласка, введіть валідну адресу гаманця'); return; }
-        const fullAddress = input;
-        const short = fullAddress.slice(0, 4) + '...' + fullAddress.slice(-4);
-        connectBtns.forEach(b => b.textContent = short);
-        statusEl.textContent = 'Connected: ' + fullAddress;
-        closePopup('popup-wallet-overlay');
-        // --- Показати основний контент після успішного підключення ---
-        ConnectWallet.hidden = true;
-        walletCapEl.hidden = false;
-        dashboardEl.hidden = false;
-        referralEl.hidden = false;
-    });
+manualBtn?.addEventListener('click', () => {
+    const input = document.getElementById('manualWalletInput').value.trim();
+    if (input.length < 10) {
+        alert('Будь ласка, введіть валідну адресу гаманця');
+        return;
+    }
+
+    const fullAddress = input;
+    const short = fullAddress.slice(0, 4) + '...' + fullAddress.slice(-4);
+
+    // --- Обновляем кнопки и статус ---
+    connectBtns.forEach(b => b.textContent = short);
+    statusEl.textContent = 'Connected: ' + fullAddress;
+
+    closePopup('popup-wallet-overlay');
+
+    // --- Показуємо основний контент ---
+    ConnectWallet.hidden = true;
+    walletCapEl.hidden = false;
+    dashboardEl.hidden = false;
+    referralEl.hidden = false;
+
+    // --- Завантажуємо позиції користувача (без показу таблиці) ---
+    if (typeof loadUserPositions === 'function') {
+        loadUserPositions(fullAddress);
+    } else {
+        console.warn('⚠️ Функція loadUserPositions не визначена');
+    }
+
+    loadUserPositions(fullAddress);
+});
+
 });
 
 //=================================================================================================
@@ -174,18 +194,16 @@ const currencies = {
     USDC: "usd-coin",
     MET: "meteora"
 };
-const pointsPerDay = 4; // чверті дня
-const forecastDays = 3;  // прогноз на m днів
-const trainDays = 7;     // навчання на останніх n днів
+const pointsPerDay = 4;
+const forecastDays = 3;
+const trainDays = 7;
 
-// --- Load historical price data ---
 async function loadData(coinId) {
     const res = await fetch(`https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=usd&days=${trainDays}`);
     const data = await res.json();
     return data.prices.map(p => ({ time: new Date(p[0]), price: p[1] }));
 }
 
-// --- Simple local regression forecast ---
 function localRegression(prices, windowSize, predictCount) {
     const result = [...prices.map(p => p.price)];
     for (let i = 0; i < predictCount; i++) {
@@ -201,21 +219,20 @@ function localRegression(prices, windowSize, predictCount) {
         const intercept = (sumY - slope * sumX) / n;
         result.push(slope * ys.length + intercept);
     }
-    return result.slice(prices.length); // повертаємо тільки прогнозні точки
+    return result.slice(prices.length);
 }
 
-// --- Build chart ---
 async function buildChart(selectedCurrency) {
     const prices = await loadData(currencies[selectedCurrency]);
     const windowSize = 6;
     const predictPoints = forecastDays * pointsPerDay;
-    const msStep = 6 * 60 * 60 * 1000; // 6 годин
-    // Forecast
+    const msStep = 6 * 60 * 60 * 1000;
+
     const predicted = localRegression(prices, windowSize, predictPoints);
     const forecastData = Array(prices.length - 1).fill(null);
     forecastData.push(prices[prices.length - 1].price);
     forecastData.push(...predicted);
-    // EMA calculation
+
     const emaPeriod = 5;
     const alpha = 2 / (emaPeriod + 1);
     const emaValues = [];
@@ -228,15 +245,18 @@ async function buildChart(selectedCurrency) {
         lastEMA = alpha * predicted[i] + (1 - alpha) * lastEMA;
         emaValues.push(lastEMA);
     }
-    // Labels for chart
-    const labels = prices.map(p => p.time.toLocaleString('en-GB', { hour12: false, hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit' }))
-        .concat(predicted.map((_, i) => new Date(prices[prices.length - 1].time.getTime() + (i + 1) * msStep)
+
+    const labels = prices.map(p => p.time.toLocaleString('en-GB', {
+        hour12: false, hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit'
+    })).concat(predicted.map((_, i) =>
+        new Date(prices[prices.length - 1].time.getTime() + (i + 1) * msStep)
             .toLocaleString('en-GB', { hour12: false, hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit' })
-        ));
-    // Buy/Sell/Break-even zones
+    ));
+
     const buyPrice = prices[0].price;
     const sellPrice = prices[prices.length - 1].price;
     const breakEven = buyPrice / 1.2;
+
     const backgroundPlugin = {
         id: 'background_zones',
         beforeDraw: (chart) => {
@@ -247,12 +267,16 @@ async function buildChart(selectedCurrency) {
             const ySell = yScale.getPixelForValue(sellPrice);
             const yBreak = yScale.getPixelForValue(breakEven);
             ctx.save();
-            ctx.fillStyle = 'rgba(16,185,129,0.12)'; ctx.fillRect(area.left, yBuy, area.right - area.left, area.bottom - yBuy);
-            ctx.fillStyle = 'rgba(239,68,68,0.12)'; ctx.fillRect(area.left, area.top, area.right - area.left, ySell - area.top);
-            ctx.fillStyle = 'rgba(250,204,21,0.15)'; ctx.fillRect(area.left, Math.min(yBuy, yBreak), area.right - area.left, Math.abs(yBreak - yBuy));
+            ctx.fillStyle = 'rgba(16,185,129,0.12)';
+            ctx.fillRect(area.left, yBuy, area.right - area.left, area.bottom - yBuy);
+            ctx.fillStyle = 'rgba(239,68,68,0.12)';
+            ctx.fillRect(area.left, area.top, area.right - area.left, ySell - area.top);
+            ctx.fillStyle = 'rgba(250,204,21,0.15)';
+            ctx.fillRect(area.left, Math.min(yBuy, yBreak), area.right - area.left, Math.abs(yBreak - yBuy));
             ctx.restore();
         }
     };
+
     const ctx = document.getElementById('cryptoChart').getContext('2d');
     if (window.chart) window.chart.destroy();
     window.chart = new Chart(ctx, {
@@ -270,13 +294,16 @@ async function buildChart(selectedCurrency) {
         },
         options: {
             responsive: true,
-            plugins: { legend: { labels: { color: '#e2e8f0' } }, title: { display: true, text: selectedCurrency + ' — Forecast', color: '#e2e8f0', font: { size: 16 } } },
+            plugins: {
+                legend: { labels: { color: '#e2e8f0' } },
+                title: { display: true, text: selectedCurrency + ' — Forecast', color: '#e2e8f0', font: { size: 16 } }
+            },
             scales: { x: { ticks: { color: '#94a3b8' } }, y: { ticks: { color: '#94a3b8' } } }
         },
         plugins: [backgroundPlugin]
     });
 }
-// --- Event listeners for toggles ---
+
 document.getElementById('toggleForecast').addEventListener('change', e => {
     if (window.chart) window.chart.data.datasets[1].hidden = !e.target.checked;
     if (window.chart) window.chart.update();
@@ -286,12 +313,39 @@ document.getElementById('toggleEMA').addEventListener('change', e => {
     if (window.chart) window.chart.update();
 });
 document.querySelectorAll('input[name="currency"]').forEach(radio => {
-    radio.addEventListener('change', e => {
-        buildChart(e.target.value);
-    });
+    radio.addEventListener('change', e => buildChart(e.target.value));
 });
-// --- Initial chart load ---
 buildChart('SOL');
 
 //=================================================================================================
+
+async function loadUserPositions(walletAddress) {
+    const tbody = document.querySelector("#MyPositions .hedge-table tbody");
+    tbody.innerHTML = "";
+    try {
+        const params = new URLSearchParams();
+        params.append("account_id", walletAddress);
+
+        const resp = await fetch("/positions", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: params.toString()
+        });
+        const html = await resp.text();
+        tbody.innerHTML = html; // вставка таблиці
+        // --- Підтягуємо іконки після вставки ---
+        tbody.querySelectorAll(".token-icon").forEach(img => {
+            const symbol = img.dataset.symbol;
+            img.src = getTokenIcon(symbol);
+            img.width = 24;
+            img.height = 24;
+            img.style.marginRight = "8px";
+            img.style.verticalAlign = "middle";
+        });
+    } catch (err) {
+        console.error("Ошибка при загрузке позиций:", err);
+    }
+}
 

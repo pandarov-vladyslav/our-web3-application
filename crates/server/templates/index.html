@@ -40,9 +40,9 @@
 				<div class="balance">
 				<div class="balance-right">
 					<h4>Your balance:</h4>
-					<h3 id="balance__sol"></h3>
-					<h3 id="balance__usd"></h3>
-					<h5 id="balance__rate"></h5>
+					<h3 id="balance__sol">Null</h3>
+					<h4 id="balance__usd">Null</h4>
+					<h5 id="balance__rate">...</h5>
 					<span id="walletStatus" style="color:#9ac31c; font-size:18px; margin-bottom:20px;">
 					Not connected
 					</span>
@@ -55,65 +55,64 @@
 				<section id="MyPositions" class="section" hidden>
 					<h2>Hedge My Position</h2>
 					<div class="table-container">
-					<p>Select which assets you want to hedge (only positions above $20 are shown):</p>
-					<div class="table-wrapper">
-						<table class="hedge-table">
-						<thead>
-							<tr>
-							<th>Select</th>
-							<th>Asset</th>
-							<th>Balance</th>
-							<th>Value (USD)</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-							<td><input type="checkbox"></td>
-							<td><img class="token-icon" data-symbol="SOL" alt="SOL"> SOL</td>
-							<td>3.0</td>
-							<td>$599.00</td>
-							</tr>
-							<tr>
-							<td><input type="checkbox"></td>
-							<td><img class="token-icon" data-symbol="USDC" alt="USDC"> USDC</td>
-							<td>1865.00</td>
-							<td>$1865.00</td>
-							</tr>
-							<tr>
-							<td><input type="checkbox"></td>
-							<td><img class="token-icon" data-symbol="BONK" alt="BONK"> BONK</td>
-							<td>1542000</td>
-							<td>$135.72</td>
-							</tr>
-						</tbody>
-						</table>
-					</div>
+						<p>Select which assets you want to hedge (only positions above $20 are shown):</p>
+						<div class="table-wrapper">
+							<table class="hedge-table">
+								<thead>
+									<tr>
+										<th>Select</th>
+										<th>Asset</th>
+										<th>Balance</th>
+										<th>Value (USD)</th>
+									</tr>
+								</thead>
+								<tbody id="positions-body">
+									<tr><td colspan="4">Loading positions...</td></tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
 					<a href="#" id="addHedgeBtn" class="btn btn-gradient btn-round">Add new hedge</a>
 				</section>
 				<script>
-					function getTokenIcon(symbol) {
+				function getTokenIcon(symbol) {
 					const s = symbol.toUpperCase();
-					// Спроба отримати іконку з CoinGecko
-					const coingeckoIcons = {
+					const icons = {
 						SOL: "https://assets.coingecko.com/coins/images/4128/large/solana.png",
 						USDC: "https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png",
 						BONK: "https://assets.coingecko.com/coins/images/28600/large/bonk.jpg"
 					};
-					// Якщо ні - fallback на cryptoicons
-					return coingeckoIcons[s] || `https://cryptoicons.org/api/icon/${s.toLowerCase()}/64`;
+					return icons[s] || `https://cryptoicons.org/api/icon/${s.toLowerCase()}/64`;
+				}
+				async function loadUserPositions(walletAddress) {
+					const tbody = document.getElementById("positions-body");
+					tbody.innerHTML = "<tr><td colspan='4'>Loading positions...</td></tr>";
+					try {
+						const params = new URLSearchParams();
+						params.append("account_id", walletAddress);
+
+						const resp = await fetch("/positions", {
+							method: "POST",
+							headers: { "Content-Type": "application/x-www-form-urlencoded" },
+							body: params.toString()
+						});
+						const html = await resp.text();
+						tbody.innerHTML = html;
+						// Підтягуємо іконки
+						tbody.querySelectorAll(".token-icon").forEach(img => {
+							const symbol = img.dataset.symbol;
+							img.src = getTokenIcon(symbol);
+							img.width = 24;
+							img.height = 24;
+							img.style.marginRight = "8px";
+							img.style.verticalAlign = "middle";
+						});
+						document.getElementById("MyPositions").hidden = false;
+					} catch (err) {
+						console.error("Ошибка при загрузке позиций:", err);
+						tbody.innerHTML = "<tr><td colspan='4'>Failed to load positions</td></tr>";
 					}
-					// Після завантаження сторінки замінюємо src для всіх іконок
-					document.addEventListener("DOMContentLoaded", () => {
-					document.querySelectorAll(".token-icon").forEach(img => {
-						const symbol = img.dataset.symbol;
-						img.src = getTokenIcon(symbol);
-						img.width = 24;
-						img.height = 24;
-						img.style.marginRight = "8px";
-						img.style.verticalAlign = "middle";
-					});
-					});
+				}
 				</script>
 
 				<h3>Crypto Price Chart</h3>
