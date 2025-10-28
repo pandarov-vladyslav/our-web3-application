@@ -33,10 +33,12 @@
 <script>
 document.getElementById('waitlistForm').addEventListener('submit', function(e) {
   e.preventDefault();
-  const email = this.email.value;
+  const email = this.email.value.trim();
   if (!email) return;
   alert('Thanks! ' + email + ' added to the waitlist.');
   this.reset();
+  
+  window.location.href = 'index.html';
 });
 </script>
 
