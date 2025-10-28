@@ -1,3 +1,4 @@
-<h1 id="balance__usd" >{{ usd }} $</h1>
-<h1 id="balance__sol" >{{ sol }} SOL</h1>
-<h1 id="balance__rate">{{ rate }} $</h1>
+<h3 id="balance__usd"  hx-swap-oob="true">{{ usd }} $</h3>
+<p id="wallet-cap"  hx-swap-oob="innerHTML">Cap.:{{ sol }} $</p>
+<h3 id="balance__sol"  hx-swap-oob="true">{{ sol }} SOL</h3>
+<h5 id="balance__rate" hx-swap-oob="true"><i>*With current exchange being {{ rate }}$ per sol</i></h5>
