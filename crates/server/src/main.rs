@@ -23,6 +23,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let app = Router::new()
         .route("/", get(index))
         .route("/account", post(account))
+        .route("/positions", post(positions))
         .route("/favicon.ico", get(favicon))
         .route("/calculator", get(calculator_body))
         .route("/calculator", post(calc))
@@ -79,6 +80,41 @@ async fn account(
     let html = exchange_prices
         .render()
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+    Ok(Html(html))
+}
+
+async fn positions(
+    State(ServerState {
+        exchange_prices,
+        polymarket_solana260: _,
+    }): State<ServerState>,
+    Form(LoadAccount { account_id }): Form<LoadAccount>,
+) -> Result<Html<String>, StatusCode> {
+    let rate = exchange_prices.read().await.sol_to_usd;
+    let lamport_balance = LamportBalance::get(account_id)
+        .await
+        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+    let sol = lamport_balance.to_sol();
+    let usd = lamport_balance.to_usd(rate);
+    // Активи користувача (затичка / треба замінити на реальні підтягування)
+    let assets = vec![
+        ("SOL", sol, usd),
+        ("USDC", 150.0, 150.0),
+        ("BONK", 1200000.0, 30.0),
+    ];
+    // HTML для <tbody>
+    let mut html = String::new();
+    for (asset, balance, value) in assets {
+        if value < 10.0 { continue; } // фільтр >$10
+        html.push_str(&format!(
+            r#"<tr>
+                <td><input type="checkbox" name="asset" value="{asset}"></td>
+                <td><img class="token-icon" data-symbol="{asset}" alt="{asset}"> {asset}</td>
+                <td>{balance:.2}</td>
+                <td>${value:.2}</td>
+            </tr>"#
+        ));
+    }
     Ok(Html(html))
 }
 
