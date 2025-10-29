@@ -1,5 +1,6 @@
 // <!-- JS Popup Logic -->
-const sound = document.getElementById('popup-sound');
+const soundsuccess = document.getElementById('popup-sound');
+const sounderror = document.getElementById('popup-error-sound');
 
 function openPopup(id) {
     document.querySelectorAll('.popup-overlay').forEach(o => o.style.display = 'none');
@@ -7,7 +8,11 @@ function openPopup(id) {
     if (el) el.style.display = 'flex';
 
     if (id === 'popup-hedge-result-overlay') {
-        sound?.play().catch(() => { });
+        soundsuccess?.play().catch(() => { });
+    }
+
+    if (id === 'popup-hedge-error-overlay') {
+        sounderror?.play().catch(() => { });
     }
 }
 
@@ -53,18 +58,20 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             closePopup('popup-hedge-offer-overlay');
             openPopup('popup-hedge-confirmation-overlay');
-
+            // Імітація "обробки" транзакції
             setTimeout(() => {
                 closePopup('popup-hedge-confirmation-overlay');
-                openPopup('popup-hedge-result-overlay');
-            }, 2000);
+                // Рандомний результат: успіх чи помилка
+                const isSuccess = Math.random() < 0.6; // 60% шанс успіху
+                if (isSuccess) {
+                    openPopup('popup-hedge-result-overlay');
+                } else {
+                    openPopup('popup-hedge-error-overlay');
+                }
+            }, 2000 + Math.random() * 2000); // випадкова затримка 2-4 сек.
         });
     }
 
-    const goDashboardBtn = document.querySelector('#popup-hedge-result-overlay .btn-gradient');
-    if (goDashboardBtn) {
-        goDashboardBtn.addEventListener('click', () => closePopup('popup-hedge-result-overlay'));
-    }
 });
 
 //=================================================================================================
