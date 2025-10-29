@@ -336,3 +336,41 @@ async function loadUserPositions(walletAddress) {
     }
 }
 
+//=================================================================================================
+
+// <!-- BACKGROUND PARTICLES -->
+particlesJS("particles-js", {
+    particles: {
+        number: { value: 69 },
+        color: { value: "#ec6320" },
+        shape: { type: "circle" },
+        opacity: { value: 0.2 },
+        size: { value: 2 },
+        line_linked: {
+            enable: true,
+            distance: 200,
+            color: "#ec6320",
+            opacity: 0.2,
+            width: 1
+        },
+        move: {
+            enable: true,
+            speed: 1 
+        }
+    },
+    interactivity: {
+        detect_on: "canvas",
+        events: {
+            onhover: { enable: true, mode: "repulse" },
+            onclick: { enable: true, mode: "push" },
+            resize: true
+        },
+        modes: {
+            repulse: { distance: 80, duration: 0.4 },
+            push: { particles_nb: 2 }
+        }
+    },
+    retina_detect: true
+});
+
+//=================================================================================================

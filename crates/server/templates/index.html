@@ -6,6 +6,7 @@
 		<title>Hedge.fun App</title>
 		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 		<link rel="stylesheet" href="css/style.css">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?display=swap&family=Oswald:wght@200;300;400;500;600;700&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800">
 	<link rel="icon" type="image/png" href="images/logo.png">
@@ -23,6 +24,7 @@
 		</header>
 
 		<main>
+			
 			<!-- SECTION: Connect Wallet -->
 			<section id="ConnectWallet" class="section">
 				<div class="connect-dashboard">
@@ -214,54 +216,89 @@
 
 		<!-- Hedge Offer Popup -->
 		<div id="popup-hedge-offer-overlay" class="popup-overlay">
-			<div id="popup-hedge-offer" class="popup" style="max-width: 650px;">
-				<h2 style="margin-bottom: 15px;">Hedge Offer</h2>
-				<p style="margin-bottom: 15px;">Choose hedge position<br>Select a market to hedge your exposure.</p>
+		<div id="popup-hedge-offer" class="popup" style="max-width: 650px;">
+			<h2 style="margin-bottom: 15px;">Hedge Offer</h2>
+			<p style="margin-bottom: 15px;">Choose hedge position<br>Select a market to hedge your exposure.</p>
 
-				<!-- Offer block -->
-				<div style="font-family: Arial, sans-serif; color: #ffffff; background-color: #1a2a50; padding: 20px; border-radius: 12px; max-width: 600px; margin: auto;">
-					<div class="table-wrapper" style="overflow-x:auto; margin-top: 10px;">
-						<table style="width: 100%; border-collapse: collapse; background-color: #243b70; border-radius: 8px; overflow: hidden;">
-							<thead>
-								<tr style="background-color: #1f2e5a;">
-									<th style="padding: 10px; text-align: left;">Market</th>
-									<th style="padding: 10px; text-align: left;">% Hedge</th>
-									<th style="padding: 10px; text-align: left;">Liquidity</th>
-									<th style="padding: 10px; text-align: left;">Select</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td style="padding: 10px;">SOL up / down</td>
-									<td style="padding: 10px;">10%</td>
-									<td style="padding: 10px;">$50K</td>
-									<td style="padding: 10px;"><input type="radio" name="hedge-select"></td>
-								</tr>
-								<tr>
-									<td style="padding: 10px;">BTC up / down</td>
-									<td style="padding: 10px;">15%</td>
-									<td style="padding: 10px;">$120K</td>
-									<td style="padding: 10px;"><input type="radio" name="hedge-select"></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
+			<!-- Offer block -->
+			<div style="font-family: Arial, sans-serif; color: #ffffff; background-color: #1a2a50; padding: 20px; border-radius: 12px; max-width: 600px; margin: auto;">
+			<div class="table-wrapper" style="overflow-x:auto; margin-top: 10px;">
+				<table style="width: 100%; border-collapse: collapse; background-color: #243b70; border-radius: 8px; overflow: hidden;">
+				<thead>
+					<tr style="background-color: #1f2e5a;">
+					<th style="padding: 10px; text-align: left;">Market</th>
+					<th style="padding: 10px; text-align: left;">Size</th>
+					<th style="padding: 10px; text-align: left;">To Win</th>
+					<th style="padding: 10px; text-align: left;">Link</th>
+					<th style="padding: 10px; text-align: left;">To Pay</th>
+					<th style="padding: 10px; text-align: left;">Hedge</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- Example row: Sol price in 2026 10% -->
+					<tr>
+					<td style="padding: 10px;">Sol price in 2026</td>
+					<td style="padding: 10px;">10%</td>
+					<td style="padding: 10px;">$850</td>
+					<td style="padding: 10px;">
+						<a href="https://polymarket.com" target="_blank" rel="noopener noreferrer" title="Open Polymarket">
+						<img src="images/Polymarket_logo.png" alt="Polymarket" style="width:24px; height:24px; vertical-align:middle; cursor:pointer;">
+						</a>
+					</td>
+							<path fill="#ffffff" d="M14 3h7v7h-2V6.41l-9.29 9.3-1.41-1.42 9.3-9.29H14V3z"/>
+							<path fill="#ffffff" d="M5 5h5V3H3v7h2V5z"/>
+							<path fill="#ffffff" d="M19 19H5V7h2v10h12v2z"/>
+						</svg>
+						polymarket
+						</a>
+					</td>
+					<td style="padding: 10px;">$85</td>
+					<td style="padding: 10px; text-align:center;">
+						<input type="radio" name="hedge-select" value="sol-2026" aria-label="Select Sol price in 2026">
+					</td>
+					</tr>
 
-					<div style="margin-top: 20px; background-color: #243b70; padding: 10px 15px; border-radius: 8px;">
-						<p style="margin-bottom: 8px; font-weight: bold;">Payment options:</p>
-						<label style="display: block; margin-bottom: 5px;">
-							<input type="radio" name="payment-option" checked>
-							Pay with portfolio funds
-						</label>
-						<label style="display: block;">
-							<input type="radio" name="payment-option">
-							Pay additionally
-						</label>
-					</div>
-				</div>
-
-				<button id="hedgeNowBtn" class="btn btn-gradient btn-round" style="margin-top: 20px;">Hedge now</button>
+					<!-- Example row: Sol price in 2026 15% -->
+					<tr>
+					<td style="padding: 10px;">Sol price in 2026</td>
+					<td style="padding: 10px;">15%</td>
+					<td style="padding: 10px;">$850</td>
+					<td style="padding: 10px;">
+						<a href="https://polymarket.com" target="_blank" rel="noopener noreferrer" title="Open Polymarket">
+						<img src="images/Polymarket_logo.png" alt="Polymarket" style="width:24px; height:24px; vertical-align:middle; cursor:pointer;">
+						</a>
+					</td>
+							<path fill="#ffffff" d="M14 3h7v7h-2V6.41l-9.29 9.3-1.41-1.42 9.3-9.29H14V3z"/>
+							<path fill="#ffffff" d="M5 5h5V3H3v7h2V5z"/>
+							<path fill="#ffffff" d="M19 19H5V7h2v10h12v2z"/>
+						</svg>
+						polymarket
+						</a>
+					</td>
+					<td style="padding: 10px;">$127.5</td>
+					<td style="padding: 10px; text-align:center;">
+						<input type="radio" name="hedge-select" value="sol-2026" aria-label="Select Sol price in 2026">
+					</td>
+					</tr>
+				</tbody>
+				</table>
 			</div>
+
+			<div style="margin-top: 20px; background-color: #243b70; padding: 10px 15px; border-radius: 8px;">
+				<p style="margin-bottom: 8px; font-weight: bold;">Payment options:</p>
+				<label style="display: block; margin-bottom: 5px;">
+				<input type="radio" name="payment-option" checked value="deduct">
+				Deduct from portfolio
+				</label>
+				<label style="display: block;">
+				<input type="radio" name="payment-option" value="outside">
+				Pay outside portfolio
+				</label>
+			</div>
+			</div>
+
+			<button id="hedgeNowBtn" class="btn btn-gradient btn-round" style="margin-top: 20px;">Hedge now</button>
+		</div>
 		</div>
 
 		<!-- Confirmation Popup -->
@@ -289,7 +326,7 @@
 				</button>
 			</div>
 		</div>
-		<audio id="popup-sound" src="effects/fanfare.mp3" preload="auto"></audio>
+		<audio id="popup-sound" src="effects/fanfare 2.mp3" preload="auto"></audio>
 
 		<div id="popup-hedge-error-overlay" class="popup-overlay" style="display:none;">
 		<div id="popup-hedge-error" class="popup" style="max-width: 500px; text-align:center;">
@@ -302,7 +339,10 @@
 			</button>
 		</div>
 		</div>
-		<audio id="popup-error-sound" src="effects/disappointment.mp3" preload="auto"></audio>
+		<audio id="popup-error-sound" src="effects/disappointment 2.mp3" preload="auto"></audio>
+
+	<!-- BACKGROUND PARTICLES -->
+	<div id="particles-js" style="position:fixed; width:100%; height:100%; top:0; left:0; z-index:-1;"></div>
 
 	<script src="js/main.js" defer></script>
 
