@@ -95,32 +95,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const walletCapEl = document.getElementById('wallet-cap');
     const dashboardEl = document.getElementById('Dashboard');
     const referralEl = document.getElementById('Referral');
-
     const phantomBtn = document.getElementById('wallet-phantom');
     const backpackBtn = document.getElementById('wallet-backpack');
     const manualBtn = document.getElementById('manualWalletBtn');
+    const connectBlock = document.getElementById('ConnectWallet');
 
-    // --- Открытие попапа при нажатии на любую кнопку ---
+    // --- Відкриття попапа при кліку на будь-яку кнопку ---
     connectBtns.forEach(btn => {
         if (!btn) return;
         btn.addEventListener('click', () => openPopup('popup-wallet-overlay'));
     });
 
-    // --- Общая функция после подключения ---
+    // --- Універсальна функція після підключення ---
     async function handleWalletConnected(fullAddress) {
         const short = fullAddress.slice(0, 4) + '...' + fullAddress.slice(-4);
         connectBtns.forEach(b => b.textContent = short);
         statusEl.textContent = 'Connected: ' + fullAddress;
+
+        // --- Показуємо основний контент ---
+        if (connectBlock) connectBlock.hidden = true;
         walletCapEl.hidden = false;
         dashboardEl.hidden = false;
         referralEl.hidden = false;
 
-        // --- Загружаем данные пользователя, но блок Hedge скрыт ---
+        // --- Завантажуємо позиції користувача ---
         if (typeof loadUserPositions === 'function') {
             try {
                 await loadUserPositions(fullAddress);
             } catch (e) {
-                console.error('Ошибка при загрузке позиций:', e);
+                console.error('Error loading positions:', e);
             }
         }
     }
@@ -130,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
         closePopup('popup-wallet-overlay');
         try {
             if (!window.solana?.isPhantom) {
-                alert('Будь ласка, встановіть Phantom Wallet');
+                alert('Please install Phantom Wallet');
                 return;
             }
             const resp = await window.solana.connect();
@@ -143,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
         closePopup('popup-wallet-overlay');
         try {
             if (!window.ethereum) {
-                alert('Будь ласка, встановіть Backpack або MetaMask');
+                alert('Please install Backpack or MetaMask');
                 return;
             }
             const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -152,38 +155,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- Manual Wallet Input ---
-manualBtn?.addEventListener('click', () => {
-    const input = document.getElementById('manualWalletInput').value.trim();
-    if (input.length < 10) {
-        alert('Будь ласка, введіть валідну адресу гаманця');
-        return;
-    }
-
-    const fullAddress = input;
-    const short = fullAddress.slice(0, 4) + '...' + fullAddress.slice(-4);
-
-    // --- Обновляем кнопки и статус ---
-    connectBtns.forEach(b => b.textContent = short);
-    statusEl.textContent = 'Connected: ' + fullAddress;
-
-    closePopup('popup-wallet-overlay');
-
-    // --- Показуємо основний контент ---
-    ConnectWallet.hidden = true;
-    walletCapEl.hidden = false;
-    dashboardEl.hidden = false;
-    referralEl.hidden = false;
-
-    // --- Завантажуємо позиції користувача (без показу таблиці) ---
-    if (typeof loadUserPositions === 'function') {
-        loadUserPositions(fullAddress);
-    } else {
-        console.warn('⚠️ Функція loadUserPositions не визначена');
-    }
-
-    loadUserPositions(fullAddress);
-});
-
+    manualBtn?.addEventListener('click', () => {
+        const input = document.getElementById('manualWalletInput').value.trim();
+        if (input.length < 10) {
+            alert('Please enter a valid wallet address');
+            return;
+        }
+        closePopup('popup-wallet-overlay');
+        handleWalletConnected(input); // викликаємо універсальну функцію
+    });
 });
 
 //=================================================================================================
